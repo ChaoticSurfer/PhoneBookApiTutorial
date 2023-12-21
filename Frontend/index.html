@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhoneBook App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h1>PhoneBook App</h1>
+
+<button onclick="getPhoneBook()">Get All PhoneRecords</button>
+
+<table id="phoneBookTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>PhoneNumber</th>
+        </tr>
+    </thead>
+    <tbody id="phoneBookBody"></tbody>
+</table>
+
+<script>
+    async function getPhoneBook() {
+        try {
+            const response = await fetch('https://localhost:7005/api/PhoneBook');
+            console.log(response);
+            const data = await response.json();
+            console.log(data);
+
+            if (response.ok) {
+                displayPhoneBook(data);
+            } else {
+                console.error('Error retrieving PhoneBook:', data);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function displayPhoneBook(phoneBook) {
+        const phoneBookBody = document.getElementById('phoneBookBody');
+
+        // Clear existing rows
+        phoneBookBody.innerHTML = '';
+
+        // Populate table with data
+        phoneBook.forEach(record => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${record.id}</td>
+                <td>${record.name || 'N/A'}</td>
+                <td>${record.phoneNumber || 'N/A'}</td>
+            `;
+            phoneBookBody.appendChild(row);
+        });
+    }
+</script>
+
+</body>
+</html>
