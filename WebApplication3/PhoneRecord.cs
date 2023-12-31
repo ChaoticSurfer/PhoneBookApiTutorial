@@ -7,6 +7,7 @@ namespace WebApplication3
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        [Phone]
         public string PhoneNumber { get; set; }
     }
 }
